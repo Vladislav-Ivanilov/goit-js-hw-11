@@ -43,17 +43,20 @@ body {
 
 .input {
 	width: 400px;
+	height: 45px;
 	background-color: #00b5b4;
 	padding: 15px;
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
 	border: transparent;
 	outline: transparent;
+	font-size: 16px;
+	color: #34568a;
 }
 
 .button {
 	background-color: #00b5b4;
-	padding: 9px;
+	padding: 10px;
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
 	cursor: pointer;
@@ -61,4 +64,38 @@ body {
 
 .icon-search {
 	fill: #34568a;
+}
+
+.gallery {
+	padding: 30px 15px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+}
+
+.photo-card {
+	width: calc((100% - 60px) / 4);
+
+	background-color: #34568a;
+	border-radius: 5px;
+	border: solid 2px #ffe46e;
+}
+
+.photo-card-img {
+	width: 100%;
+	display: block;
+
+}
+
+.info {
+	display: flex;
+	justify-content: space-around;
+}
+
+.info-item {	
+	text-align: center;
+	font-size: 16px;
+	display: flex;
+	flex-direction: column;
+
 }
