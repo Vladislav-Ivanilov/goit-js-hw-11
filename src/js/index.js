@@ -11,10 +11,11 @@ const refs = {
 };
 
 let imagesApiService = new ImagesApiService();
-
-let totalPages = 0;
+const gallery = new SimpleLightbox('.gallery a');
 
 refs.searchForm.addEventListener('submit', onSearch);
+
+let totalPages = 0;
 
 const options = {
   root: null,
@@ -22,8 +23,8 @@ const options = {
   threshold: 1,
 };
 
-const observer = new IntersectionObserver((entries, observe) => {
-  const [targetEl] = entries;
+const observer = new IntersectionObserver(async entries => {
+  const [targetEl] = await entries;
 
   if (targetEl.isIntersecting) {
     try {
@@ -39,22 +40,23 @@ const observer = new IntersectionObserver((entries, observe) => {
   }
 }, options);
 
-const fetchImages = function () {
-  imagesApiService.fetchImages().then(({ hits, totalHits }) => {
-    totalPages = totalHits;
+const fetchImages = async function () {
+  const data = await imagesApiService.fetchImages();
+  const { hits, totalHits } = data;
 
-    if (totalPages === 0) {
-      return errorQuery();
-    }
+  totalPages = totalHits;
 
-    if ((imagesApiService.page - 1) * imagesApiService.per_page >= totalPages) {
-      observer.unobserve(refs.targetEl);
-      endOfSearch();
-    }
-    refs.galleryEL.insertAdjacentHTML('beforeend', portfolioCard(hits));
-    imagesApiService.incrementPage();
-    new SimpleLightbox('.gallery a');
-  });
+  if (totalPages === 0) {
+    return errorQuery();
+  }
+  if ((imagesApiService.page - 1) * imagesApiService.per_page >= totalPages) {
+    observer.unobserve(refs.targetEl);
+    endOfSearch();
+  }
+
+  refs.galleryEL.insertAdjacentHTML('beforeend', portfolioCard(hits));
+  imagesApiService.incrementPage();
+  gallery.refresh();
 };
 
 function onSearch(ele) {
